@@ -2,14 +2,14 @@
   (:require [clojure.zip :as zip])
   (:import clojure.lang.MapEntry))
 
-(defn fz-branch? [node]
+(defn- fz-branch? [node]
   (or (map? node)
       (seq? node)
       (set? node)
       (vector? node)
       (= MapEntry (type node))))
 
-(defn fz-children [branch]
+(defn- fz-children [branch]
  (cond
    (map? branch) (seq branch)
    (set? branch) (seq branch)
@@ -18,7 +18,7 @@
    (seq branch)
    :else branch))
 
-(defn fz-make-node [node children]
+(defn- fz-make-node [node children]
   (let [new-children
         (cond
          (map? node) (into {} children)
@@ -41,9 +41,13 @@
 (defn- not-end-loc-seq [loc]
   (not= :end (get-path loc)))
 
-(defn fz-loc-seq [form]
+(defn fz-loc-seq
+  "a seq of all locations in the form"
+  [form]
   (let [loc-seq (iterate zip/next (form-zip form))]
-    (->> loc-seq (take-while not-end-loc-seq))))
+    (take-while not-end-loc-seq loc-seq)))
 
-(defn fz-node-seq [form]
+(defn fz-node-seq
+  "a seq of all nodes in the form"
+  [form]
    (map zip/node (fz-loc-seq form)))

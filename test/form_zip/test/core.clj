@@ -15,4 +15,11 @@
            (println "hi") println "hi" (prn b c) prn b c)
        
          (fz-node-seq
-          '(defchk a :> integer? [b [c :< map?]] (println "hi") (prn b c))))))
+          '(defchk a :> integer? [b [c :< map?]] (println "hi") (prn b c)))))
+
+  (is (= {1 {3 3}, 4 5}
+         (-> '{1 {2 3} 4 5} form-zip zip/down
+             zip/down zip/right zip/down zip/down
+             (zip/edit inc) zip/root))))
+
+
