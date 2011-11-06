@@ -1,4 +1,4 @@
-form-zip returns a zipper from a clojure form.
+form-zip returns a zipper from a Clojure form.
 
     user=> (require '[clojure.zip :as zip])
     user=> (use 'form-zip.core)
